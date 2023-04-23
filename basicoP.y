@@ -59,8 +59,7 @@ listInst: instr listInst;
 
 listInst: ;
 
-instr: ID {int i= localizaSimbolo(lexema,ID); $$=i;} IGUAL compara ENDL {generaCodigo(ASIGNAR
-,$2,$4,'-'); };
+instr: ID {int i= localizaSimbolo(lexema,ID); $$=i;} IGUAL compara ENDL {generaCodigo(ASIGNAR,$2,$4,'-'); };
 
 instr: ID {localizaSimbolo(lexema,ID);} PUNTERO ENDL;/**/
 
@@ -82,9 +81,9 @@ expr: expr SUMA term {int i= genTemp() ;generaCodigo(SUMAR,i,$1,$3);$$=i;};
 
 expr: expr RESTA term {int i= genTemp() ;generaCodigo(RESTAR,i,$1,$3);$$=i;};;
 
-instr: expr POSINC;
+instr: expr POSINC {int i= localizaSimbolo("1",NUMENT);$$=i;} {int k=genTemp(); generaCodigo(SUMAR,k,$1,$3); $$=k;} {generaCodigo(ASIGNAR,$1,$4,'-'); };
 
-instr: expr POSINC ENDL;
+instr: expr POSINC ENDL {int i= localizaSimbolo("1",NUMENT);$$=i;} {int k=genTemp(); generaCodigo(SUMAR,k,$1,$4); $$=k;} {generaCodigo(ASIGNAR,$1,$5,'-'); };
 
 compara: compara MAYORIGUALQUE compara {int i=genTemp(); generaCodigo(OPMAYORIGUALQUE,i ,$1,$3);$$=i;}; 
 

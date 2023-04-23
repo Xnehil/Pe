@@ -8,7 +8,7 @@ u = tinka \pe
 b = 500000000 \pe
 c = u =) b \pe
 
-para (i=0, i=(5, i=i+1 \pe) hazte:
+para (i=0, i=(5, i++) hazte:
 	x=3 \pe
 fuepe
 
@@ -17,11 +17,11 @@ lee(x) \pe
 i=0 \pe
 mientras(i=(3) hazte:
 	x = 4 \pe
-	i = i+1 \pe
+	i++ \pe
 fuepe
 
 micriterio:
-	x=x+1 \pe
+	x++ \pe
 fuepe
 
 owo= 78 \pe
