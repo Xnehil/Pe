@@ -1,3 +1,8 @@
+a = tinka \pe
+b = 500000000 \pe
+c = a =) b \pe
+
+
 x= 7=(20 \pe
 x= 10/2 \pe
 
@@ -6,4 +11,4 @@ para (i=0, i=(5, i=i+1 \pe) hazte:
     x=3 \pe
 fuepe
 
-lee(x) \pe /*falta valor en la tabla de símbolo*/
+lee(x) \pe
