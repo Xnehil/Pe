@@ -1,28 +1,15 @@
-<<<<<<< HEAD
 x= 7=(20 \pe
 x = 10/2 \pe
 
 y = 5==x \pe
 y = !x \pe
 
-para (i=0, i=(5, i=i+1 \pe) hazte:
-	x = 3 \pe
-fuepe
-
-lee(x) \pe /*falta valor en la tabla de símbolo*/
-=======
-a = tinka \pe
+u = tinka \pe
 b = 500000000 \pe
-c = a =) b \pe
-
-
-x= 7=(20 \pe
-x= 10/2 \pe
+c = u =) b \pe
 
 para (i=0, i=(5, i=i+1 \pe) hazte:
-    
-    x=3 \pe
+	x=3 \pe
 fuepe
 
 lee(x) \pe
->>>>>>> 4fb9b346a6cf2a1531e1f62ce0f6b1cf259fc7aa
