@@ -48,7 +48,7 @@ TipoTablaCod tablaCod[200];
 %}
 
 %token  MIENTRAS ID IGUAL NUMENT SUMA PARIZQ FUEPE DOSPUNT PARDER RESTA MUL DIV ZAFA ENDL PARA HACER MANYA TRAETE VETEA GUARDARMEM IMPRIME LEE MENORQUE MAYORQUE MEVOY HACIA IGUALQUE MAYORIGUALQUE MENORIGUALQUE LIBRERIA TINKA PALTA CRITERIO EXCLAMACION CADENA SALTATE DEFFUN CHECA COMA DEVUELVE VERDURA FEIK CONDSI SINO POSINC PUNTERO MENU ETIQUETA NOHAY DEFINE
-%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION EXEC_TINKA OPMAYORIGUALQUE MANYAR PALTEARSE RESTAR OPMENORQUE USARCRITERIO SALTAFINCRIT SALTAINICRIT
+%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION EXEC_TINKA OPMAYORIGUALQUE MANYAR PALTEARSE RESTAR OPMENORQUE USARCRITERIO SALTAFINCRIT SALTAINICRIT SALTASWITCH
 
 %%
 /*gramatica*/
@@ -129,12 +129,12 @@ incluir: TRAETE LIBRERIA;
 define: MANYA ID {int i=localizaSimbolo(lexema,DEFINE); $$=i;} factor {generaCodigo(MANYAR, $3, $4, '-');};
 
 //Ya casi, $0 es el anterior, grande ami
-instr: MEVOY PARIZQ ID {int i=localizaSimbolo(lexema,ID); $$=i;} PARDER DOSPUNT {generaCodigo(SALTAR,  '?', '-', '-'); $$=cx;} {int i=$4; $$=i;} listaSwitch FUEPE;
+instr: MEVOY PARIZQ ID {int i=localizaSimbolo(lexema,ID); $$=i;} PARDER DOSPUNT  {int i=$4; $$=i;}listaSwitch FUEPE;
 
-listaSwitch: {int i=$0; $$=i;} casoSwitch listaSwitch;
+listaSwitch: {int i=$0; $$=i;} casoSwitch {generaCodigo(SALTAR, '?', '-', '-'); $$=cx;} {int i=$1; $$=i;} listaSwitch {tablaCod[$3].a1=cx+1;};
 listaSwitch: ;
 
-casoSwitch: HACIA NUMENT {localizaSimbolo(lexema,NUMENT);} DOSPUNT listInst;
+casoSwitch: {int i=$0; $$=i;} HACIA NUMENT {int i=localizaSimbolo(lexema,NUMENT); $$=i;} {generaCodigo(SALTASWITCH, $1, $4, '?'); $$=cx;} DOSPUNT listInst {tablaCod[$5].a3=cx+1;};
 
 instr: IMPRIME PARIZQ CADENA PARDER ENDL; 
 
@@ -504,6 +504,12 @@ void interpretaCodigo(){
 					tablaDeSimbolos[a2].valor=tablaDeSimbolos[a2].valor-1;
 					if(tablaDeSimbolos[a2].valor>0)
 						i=a1;
+				}
+				if(op==SALTASWITCH)
+				{
+					//a1 es variable, a2 es num a comparar, a3 es cuanto saltare
+					if(tablaDeSimbolos[a1].valor!=tablaDeSimbolos[a2].valor)
+						i=a3;
 				}
         }
 

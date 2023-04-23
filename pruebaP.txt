@@ -1,27 +1,18 @@
-x= 7=(20 \pe
-x = 10/2 \pe
+x=15 \pe
+z=0 \pe
 
-y = 5==x \pe
-y = !x \pe
-
-u = tinka \pe
-b = 500000000 \pe
-c = u =) b \pe
-
-para (i=0, i=(5, i++) hazte:
-	x=3 \pe
+meVoy(x):
+	hacia 1:
+		y=4 \pe
+		z=z+1 \pe
+	hacia 7: 
+		y=10 \pe 
+		z=z-1 \pe 
+	hacia 15:
+		z=40 \pe 
+		y=x+z \pe 
 fuepe
 
-lee(x) \pe
+owo=4 \pe
 
-i=0 \pe
-mientras(i=(3) hazte:
-	x = 4 \pe
-	i++ \pe
-fuepe
 
-micriterio:
-	x++ \pe
-fuepe
-
-owo= 78 \pe
