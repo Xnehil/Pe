@@ -45,7 +45,7 @@ TipoTablaCod tablaCod[200];
 %}
 
 %token  MIENTRAS ID IGUAL NUMENT SUMA PARIZQ FUEPE DOSPUNT PARDER RESTA MUL DIV ZAFA ENDL PARA HACER MANYA TRAETE VETEA GUARDARMEM IMPRIME LEE MENORQUE MAYORQUE MEVOY A IGUALQUE MAYORIGUALQUE MENORIGUALQUE LIBRERIA TINKA PALTA CRITERIO EXCLAMACION CADENA SALTATE DEFFUN CHECA COMA DEVUELVE VERDURA FEIK CONDSI SINO POSINC PUNTERO MENU ETIQUETA NOHAY DEFINE
-%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER
+%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION
 
 %%
 /*gramatica*/
@@ -71,7 +71,7 @@ compara: compara MENORQUE expr;
 
 compara: compara MAYORQUE expr;
 
-compara: compara IGUALQUE expr;
+compara: compara IGUALQUE expr {int i=genTemp();generaCodigo(OPIGUALQUE,i,$1,$3);$$=i;};
 
 compara: expr;
 
@@ -87,7 +87,7 @@ compara: compara MAYORIGUALQUE compara;
 
 compara: compara MENORIGUALQUE compara {int i=genTemp(); generaCodigo(OPMENORIGUALQUE,i ,$1,$3);$$=i;};
 
-compara: EXCLAMACION compara;
+compara: EXCLAMACION compara {int i=genTemp(); generaCodigo(NEGACION,i,$2,'-');$$=i;};
 
 expr: term;
 
@@ -431,6 +431,18 @@ void interpretaCodigo(){
                                 tablaDeSimbolos[a1].valor=1;
                         else
                                 tablaDeSimbolos[a1].valor=0;
+                }
+                if(op==OPIGUALQUE){
+                	if(tablaDeSimbolos[a2].valor==tablaDeSimbolos[a3].valor)
+                		tablaDeSimbolos[a1].valor = 1;
+                	else
+                		tablaDeSimbolos[a1].valor = 0;
+                }
+                if(op==NEGACION){
+                	if(tablaDeSimbolos[a2].valor==0)
+                		tablaDeSimbolos[a1].valor = 1;
+                	else
+                		tablaDeSimbolos[a1].valor = 0;
                 }
                 if(op==SALTAR){
                         i=a1-1;

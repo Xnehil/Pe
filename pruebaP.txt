@@ -1,9 +1,11 @@
 x= 7=(20 \pe
-x= 10/2 \pe
+x = 10/2 \pe
+
+y = 5==x \pe
+y = !x \pe
 
 para (i=0, i=(5, i=i+1 \pe) hazte:
-    
-    x=3 \pe
+	x = 3 \pe
 fuepe
 
 lee(x) \pe /*falta valor en la tabla de símbolo*/
