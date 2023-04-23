@@ -132,7 +132,7 @@ define: MANYA ID {int i=localizaSimbolo(lexema,DEFINE); $$=i;} factor {generaCod
 //Ya casi, $0 es el anterior, grande ami
 instr: MEVOY PARIZQ ID {int i=localizaSimbolo(lexema,ID); $$=i;} PARDER DOSPUNT {generaCodigo(SALTAR,  '?', '-', '-'); $$=cx;} {int i=$4; $$=i;} listaSwitch FUEPE;
 
-listaSwitch: {int i=$0; $$=i} casoSwitch listaSwitch;
+listaSwitch: {int i=$0; $$=i;} casoSwitch listaSwitch;
 listaSwitch: ;
 
 casoSwitch: HACIA NUMENT {localizaSimbolo(lexema,NUMENT);} DOSPUNT listInst;
