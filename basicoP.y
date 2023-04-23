@@ -8,10 +8,13 @@ prototipos
 #include<stdio.h>
 #include<string.h>
 #include<ctype.h>
+#include <time.h>
+
 void yyerror(char *s);
 int yylex();
-char lexema[100];
 int localizaSimbolo(char *lexema, int token);
+char lexema[100];
+
 
 typedef struct {
 	char nombre[100];
@@ -45,7 +48,11 @@ TipoTablaCod tablaCod[200];
 %}
 
 %token  MIENTRAS ID IGUAL NUMENT SUMA PARIZQ FUEPE DOSPUNT PARDER RESTA MUL DIV ZAFA ENDL PARA HACER MANYA TRAETE VETEA GUARDARMEM IMPRIME LEE MENORQUE MAYORQUE MEVOY A IGUALQUE MAYORIGUALQUE MENORIGUALQUE LIBRERIA TINKA PALTA CRITERIO EXCLAMACION CADENA SALTATE DEFFUN CHECA COMA DEVUELVE VERDURA FEIK CONDSI SINO POSINC PUNTERO MENU ETIQUETA NOHAY DEFINE
+<<<<<<< HEAD
 %token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION
+=======
+%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER EXEC_TINKA OPMAYORIGUALQUE
+>>>>>>> 4fb9b346a6cf2a1531e1f62ce0f6b1cf259fc7aa
 
 %%
 /*gramatica*/
@@ -65,7 +72,7 @@ instr: ZAFA ENDL;
 
 instr: SALTATE ENDL;
 
-expr: TINKA PARIZQ PARDER;
+expr: TINKA {int i = genTemp() ; generaCodigo(EXEC_TINKA,i,'-','-');$$=i;};
 
 compara: compara MENORQUE expr;
 
@@ -83,7 +90,7 @@ instr: expr POSINC;
 
 instr: expr POSINC ENDL;
 
-compara: compara MAYORIGUALQUE compara; 
+compara: compara MAYORIGUALQUE compara {int i=genTemp(); generaCodigo(OPMAYORIGUALQUE,i ,$1,$3);$$=i;}; 
 
 compara: compara MENORIGUALQUE compara {int i=genTemp(); generaCodigo(OPMENORIGUALQUE,i ,$1,$3);$$=i;};
 
@@ -426,6 +433,15 @@ void interpretaCodigo(){
                 if(op==DIVIDIR){
                                 tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor/tablaDeSimbolos[a3].valor;
                 }
+
+                if(op==OPMAYORIGUALQUE){
+                        if(tablaDeSimbolos[a2].valor>=tablaDeSimbolos[a3].valor)
+                                tablaDeSimbolos[a1].valor=1;
+                        else
+                                tablaDeSimbolos[a1].valor=0;
+                }
+
+
                 if(op==OPMENORIGUALQUE){
                         if(tablaDeSimbolos[a2].valor<=tablaDeSimbolos[a3].valor)
                                 tablaDeSimbolos[a1].valor=1;
@@ -461,7 +477,11 @@ void interpretaCodigo(){
                 }
                 if(op==LEER){
                                 scanf("%lf",&tablaDeSimbolos[a1].valor );
-                } 
+                }
+                if(op == EXEC_TINKA){
+                    srand(time(NULL));
+                    tablaDeSimbolos[a1].valor = rand();
+                }
         }
 
 }
