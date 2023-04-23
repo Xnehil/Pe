@@ -47,8 +47,8 @@ TipoTablaCod tablaCod[200];
 
 %}
 
-%token  MIENTRAS ID IGUAL NUMENT SUMA PARIZQ FUEPE DOSPUNT PARDER RESTA MUL DIV ZAFA ENDL PARA HACER MANYA TRAETE VETEA GUARDARMEM IMPRIME LEE MENORQUE MAYORQUE MEVOY A IGUALQUE MAYORIGUALQUE MENORIGUALQUE LIBRERIA TINKA PALTA CRITERIO EXCLAMACION CADENA SALTATE DEFFUN CHECA COMA DEVUELVE VERDURA FEIK CONDSI SINO POSINC PUNTERO MENU ETIQUETA NOHAY DEFINE
-%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION EXEC_TINKA OPMAYORIGUALQUE
+%token  MIENTRAS ID IGUAL NUMENT SUMA PARIZQ FUEPE DOSPUNT PARDER RESTA MUL DIV ZAFA ENDL PARA HACER MANYA TRAETE VETEA GUARDARMEM IMPRIME LEE MENORQUE MAYORQUE MEVOY HACIA IGUALQUE MAYORIGUALQUE MENORIGUALQUE LIBRERIA TINKA PALTA CRITERIO EXCLAMACION CADENA SALTATE DEFFUN CHECA COMA DEVUELVE VERDURA FEIK CONDSI SINO POSINC PUNTERO MENU ETIQUETA NOHAY DEFINE
+%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION EXEC_TINKA OPMAYORIGUALQUE MANYAR PALTEARSE RESTAR OPMENORQUE USARCRITERIO SALTAFINCRIT SALTAINICRIT
 
 %%
 /*gramatica*/
@@ -70,7 +70,7 @@ instr: SALTATE ENDL;
 
 expr: TINKA {int i = genTemp() ; generaCodigo(EXEC_TINKA,i,'-','-');$$=i;} ;
 
-compara: compara MENORQUE expr;
+compara: compara MENORQUE expr {int i=genTemp(); generaCodigo(OPMENORQUE, i, $1, $3); $$=i;};
 
 compara: compara MAYORQUE expr;
 
@@ -80,7 +80,7 @@ compara: expr;
 
 expr: expr SUMA term {int i= genTemp() ;generaCodigo(SUMAR,i,$1,$3);$$=i;};
 
-expr: expr RESTA term;
+expr: expr RESTA term {int i= genTemp() ;generaCodigo(RESTAR,i,$1,$3);$$=i;};;
 
 instr: expr POSINC;
 
@@ -127,14 +127,15 @@ bloqSino: SINO bloqinst;
 
 incluir: TRAETE LIBRERIA;
 
-define: MANYA ID {localizaSimbolo(lexema,DEFINE);} NUMENT;
+define: MANYA ID {int i=localizaSimbolo(lexema,DEFINE); $$=i;} factor {generaCodigo(MANYAR, $3, $4, '-');};
 
-instr: MEVOY PARIZQ ID {localizaSimbolo(lexema,ID);} PARDER DOSPUNT listaSwitch FUEPE;
+//Ya casi, $0 es el anterior, grande ami
+instr: MEVOY PARIZQ ID {int i=localizaSimbolo(lexema,ID); $$=i;} PARDER DOSPUNT {generaCodigo(SALTAR,  '?', '-', '-'); $$=cx;} {int i=$4; $$=i;} listaSwitch FUEPE;
 
-listaSwitch: casoSwitch listaSwitch;
+listaSwitch: {int i=$0; $$=i} casoSwitch listaSwitch;
 listaSwitch: ;
 
-casoSwitch: A NUMENT {localizaSimbolo(lexema,NUMENT);} DOSPUNT listInst;
+casoSwitch: HACIA NUMENT {localizaSimbolo(lexema,NUMENT);} DOSPUNT listInst;
 
 instr: IMPRIME PARIZQ CADENA PARDER ENDL; 
 
@@ -166,9 +167,10 @@ arg: ID {localizaSimbolo(lexema,ID);} COMA;
 
 instr: CHECA compara DOSPUNT CADENA ENDL;
 
-instr: PALTA ENDL;
+instr: PALTA {generaCodigo(PALTEARSE, '-', '-', '-');} ENDL;
 
-instr: CRITERIO bloqinst;
+instr: CRITERIO {int i=genTemp(); $$=i;} {generaCodigo(EXEC_TINKA, $2, '-', '-');}
+{generaCodigo(SALTAFINCRIT, $2, '?', '-'); $$=cx;} bloqinst {generaCodigo(SALTAINICRIT, $4, $2, '-');} {tablaCod[$4].a2=cx;};
 
 
 preprocesa: define preprocesa;
@@ -239,7 +241,7 @@ int yylex(){
 			if(!strcmp(lexema, "quePaltaMeVoy")) return PALTA;
 			if(!strcmp(lexema, "meVoy")) return MEVOY;
 			if(!strcmp(lexema, "fuepe")) return FUEPE;
-			if(!strcmp(lexema, "a")) return A;
+			if(!strcmp(lexema, "hacia")) return HACIA;
 			if(!strcmp(lexema, "manya")) return MANYA;
 			if(!strcmp(lexema, "guardameSitioPorfa")) return GUARDARMEM;
 			if(!strcmp(lexema, "imprime")) return IMPRIME;
@@ -424,26 +426,30 @@ void interpretaCodigo(){
               
                 
                 if(op==ASIGNAR){
-                                tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor;
+					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor;
                 }  
                 if(op==DIVIDIR){
-                                tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor/tablaDeSimbolos[a3].valor;
+					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor/tablaDeSimbolos[a3].valor;
                 }
 
                 if(op==OPMAYORIGUALQUE){
-                        if(tablaDeSimbolos[a2].valor>=tablaDeSimbolos[a3].valor)
-                                tablaDeSimbolos[a1].valor=1;
-                        else
-                                tablaDeSimbolos[a1].valor=0;
+					if(tablaDeSimbolos[a2].valor>=tablaDeSimbolos[a3].valor)
+							tablaDeSimbolos[a1].valor=1;
+					else
+							tablaDeSimbolos[a1].valor=0;
                 }
 
 
                 if(op==OPMENORIGUALQUE){
-                        if(tablaDeSimbolos[a2].valor<=tablaDeSimbolos[a3].valor)
-                                tablaDeSimbolos[a1].valor=1;
-                        else
-                                tablaDeSimbolos[a1].valor=0;
+					if(tablaDeSimbolos[a2].valor<=tablaDeSimbolos[a3].valor)
+							tablaDeSimbolos[a1].valor=1;
+					else
+							tablaDeSimbolos[a1].valor=0;
                 }
+				if(op==MENORQUE)
+				{
+					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor<tablaDeSimbolos[a3].valor;
+				}
                 if(op==OPIGUALQUE){
                 	if(tablaDeSimbolos[a2].valor==tablaDeSimbolos[a3].valor)
                 		tablaDeSimbolos[a1].valor = 1;
@@ -457,27 +463,49 @@ void interpretaCodigo(){
                 		tablaDeSimbolos[a1].valor = 0;
                 }
                 if(op==SALTAR){
-                        i=a1-1;
+					i=a1-1;
                 }   
                 if(op==SALTARF){
-                        if(tablaDeSimbolos[a1].valor==0)
-                                i=a2-1;
-        
+					if(tablaDeSimbolos[a1].valor==0)
+							i=a2-1;
+	
                 }   
                 if(op==SALTARV){
-                        if(tablaDeSimbolos[a1].valor==1)
-                                i=a2-1;
+					if(tablaDeSimbolos[a1].valor==1)
+							i=a2-1;
                 }
                 if(op==SUMAR){
-                                tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor+tablaDeSimbolos[a3].valor;
+					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor+tablaDeSimbolos[a3].valor;
+                }
+                if(op==RESTAR){
+					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor-tablaDeSimbolos[a3].valor;
                 }
                 if(op==LEER){
-                                scanf("%lf",&tablaDeSimbolos[a1].valor );
+					scanf("%lf",&tablaDeSimbolos[a1].valor );
                 }
                 if(op == EXEC_TINKA){
                     srand(time(NULL));
-                    tablaDeSimbolos[a1].valor = rand();
+                    tablaDeSimbolos[a1].valor = rand()%50;
                 }
+				if(op==MANYAR)
+				{
+					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor;
+				}
+				if(op==PALTEARSE)
+				{
+					exit(1);
+				}
+				if(op==SALTAFINCRIT)
+				{
+					if(tablaDeSimbolos[a1].valor==0)
+						i=a2-1;
+				}
+				if(op==SALTAINICRIT)
+				{
+					tablaDeSimbolos[a2].valor=tablaDeSimbolos[a2].valor-1;
+					if(tablaDeSimbolos[a2].valor>0)
+						i=a1;
+				}
         }
 
 }

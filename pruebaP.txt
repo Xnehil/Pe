@@ -1,16 +1,9 @@
-x= 7=(20 \pe
-x = 10/2 \pe
 
-y = 5==x \pe
-y = !x \pe
 
-u = tinka \pe
-b = 500000000 \pe
-c = u =) b \pe
-
-para (i=0, i=(5, i=i+1 \pe) hazte:
-	x=3 \pe
+micriterio:
+	x=x+1 \pe
 fuepe
+
 
 lee(x) \pe
 
@@ -20,3 +13,4 @@ mientras(i=(3) hazte:
 	i = i+1 \pe
 fuepe
 
+owo= 78 \pe
