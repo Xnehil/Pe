@@ -112,9 +112,9 @@ factor: FEIK;
 
 factor: NOHAY;
 
-instr: MIENTRAS PARIZQ compara PARDER HACER bloqinst;
+instr: MIENTRAS PARIZQ {$$=cx+1;} compara {generaCodigo(SALTARF,$4,'?','-'); $$=cx;} PARDER HACER bloqinst {generaCodigo(SALTAR,$3, '-','-');$$=cx;}   {tablaCod[$5].a2=cx+1;};
 
-instr: PARA PARIZQ auxPara COMA {$$=cx+1;} compara { generaCodigo(SALTARF,$6,'?','-'); $$=cx; } COMA instr PARDER HACER bloqinst { generaCodigo(SALTAR,$5, '-','-');$$=cx;   }   {tablaCod[$7].a2=cx+1;};
+instr: PARA PARIZQ auxPara COMA {$$=cx+1;} compara {generaCodigo(SALTARF,$6,'?','-'); $$=cx; } COMA instr PARDER HACER bloqinst { generaCodigo(SALTAR,$5, '-','-');$$=cx;   }   {tablaCod[$7].a2=cx+1;};
 
 auxPara: ID {localizaSimbolo(lexema,ID);} IGUAL compara; /*Para la inicializacion dentro del for*/
 
@@ -218,7 +218,7 @@ int yylex(){
 			
 			if(c=='.'){
 				c2 = getchar();
-				if(c2=='h'){
+				if(c2=='p'){
 					lexema[i++] = '.';
 					lexema[i++] = c2;
 					lexema[i++] = '\0';

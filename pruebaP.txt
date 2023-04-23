@@ -13,3 +13,10 @@ para (i=0, i=(5, i=i+1 \pe) hazte:
 fuepe
 
 lee(x) \pe
+
+i=0 \pe
+mientras(i=(3) hazte:
+	x = 4 \pe
+	i = i+1 \pe
+fuepe
+
