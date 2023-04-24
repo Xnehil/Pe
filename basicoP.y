@@ -48,7 +48,7 @@ TipoTablaCod tablaCod[200];
 %}
 
 %token  MIENTRAS ID IGUAL NUMENT SUMA PARIZQ FUEPE DOSPUNT PARDER RESTA MUL DIV ZAFA ENDL PARA HACER MANYA TRAETE VETEA GUARDARMEM IMPRIME LEE MENORQUE MAYORQUE MEVOY HACIA IGUALQUE MAYORIGUALQUE MENORIGUALQUE LIBRERIA TINKA PALTA CRITERIO EXCLAMACION CADENA SALTATE DEFFUN CHECA COMA DEVUELVE VERDURA FEIK CONDSI SINO POSINC PUNTERO MENU ETIQUETA NOHAY DEFINE
-%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION EXEC_TINKA OPMAYORIGUALQUE MANYAR PALTEARSE RESTAR OPMENORQUE USARCRITERIO SALTAFINCRIT SALTAINICRIT SALTASWITCH
+%token MULTIPLICAR ASIGNAR DIVIDIR OPMENORIGUALQUE SALTARF SALTAR SALTARV SUMAR LEER OPIGUALQUE NEGACION EXEC_TINKA OPMAYORIGUALQUE MANYAR PALTEARSE RESTAR OPMENORQUE USARCRITERIO SALTAINICRIT SALTASWITCH
 
 %%
 /*gramatica*/
@@ -59,7 +59,9 @@ listInst: instr listInst;
 
 listInst: ;
 
-instr: ID {int i= localizaSimbolo(lexema,ID); $$=i;} IGUAL compara ENDL {generaCodigo(ASIGNAR,$2,$4,'-'); };
+instr: asignacion ENDL;
+
+asignacion: ID {int i= localizaSimbolo(lexema,ID); $$=i;} IGUAL compara  {generaCodigo(ASIGNAR,$2,$4,'-'); };
 
 instr: ID {localizaSimbolo(lexema,ID);} PUNTERO ENDL;/**/
 
@@ -81,9 +83,10 @@ expr: expr SUMA term {int i= genTemp() ;generaCodigo(SUMAR,i,$1,$3);$$=i;};
 
 expr: expr RESTA term {int i= genTemp() ;generaCodigo(RESTAR,i,$1,$3);$$=i;};;
 
-instr: expr POSINC {int i= localizaSimbolo("1",NUMENT);$$=i;} {int k=genTemp(); generaCodigo(SUMAR,k,$1,$3); $$=k;} {generaCodigo(ASIGNAR,$1,$4,'-'); };
-
+asignacion: expr POSINC {int i= localizaSimbolo("1",NUMENT);$$=i;} {int k=genTemp(); generaCodigo(SUMAR,k,$1,$3); $$=k;} {generaCodigo(ASIGNAR,$1,$4,'-'); };
+/*
 instr: expr POSINC ENDL {int i= localizaSimbolo("1",NUMENT);$$=i;} {int k=genTemp(); generaCodigo(SUMAR,k,$1,$4); $$=k;} {generaCodigo(ASIGNAR,$1,$5,'-'); };
+*/
 
 compara: compara MAYORIGUALQUE compara {int i=genTemp(); generaCodigo(OPMAYORIGUALQUE,i ,$1,$3);$$=i;}; 
 
@@ -113,7 +116,7 @@ factor: NOHAY;
 
 instr: MIENTRAS PARIZQ {$$=cx+1;} compara {generaCodigo(SALTARF,$4,'?','-'); $$=cx;} PARDER HACER bloqinst {generaCodigo(SALTAR,$3, '-','-');$$=cx;}   {tablaCod[$5].a2=cx+1;};
 
-instr: PARA PARIZQ auxPara COMA {$$=cx+1;} compara {generaCodigo(SALTARF,$6,'?','-'); $$=cx; } COMA instr PARDER HACER bloqinst { generaCodigo(SALTAR,$5, '-','-');$$=cx;   }   {tablaCod[$7].a2=cx+1;};
+instr: PARA PARIZQ auxPara COMA {$$=cx+1;} compara {generaCodigo(SALTARF,$6,'?','-'); $$=cx; } COMA asignacion PARDER HACER bloqinst { generaCodigo(SALTAR,$5, '-','-');$$=cx;   }   {tablaCod[$7].a2=cx+1;};
 
 auxPara: ID {localizaSimbolo(lexema,ID);} IGUAL compara; /*Para la inicializacion dentro del for*/
 
@@ -169,7 +172,7 @@ instr: CHECA compara DOSPUNT CADENA ENDL;
 instr: PALTA {generaCodigo(PALTEARSE, '-', '-', '-');} ENDL;
 
 instr: CRITERIO {int i=genTemp(); $$=i;} {generaCodigo(EXEC_TINKA, $2, '-', '-');}
-{generaCodigo(SALTAFINCRIT, $2, '?', '-'); $$=cx;} bloqinst {generaCodigo(SALTAINICRIT, $4, $2, '-');} {tablaCod[$4].a2=cx;};
+{generaCodigo(SALTARF, $2, '?', '-'); $$=cx;} bloqinst {generaCodigo(SALTAINICRIT, $4, $2, '-');} {tablaCod[$4].a2=cx;};
 
 
 preprocesa: define preprocesa;
@@ -493,11 +496,6 @@ void interpretaCodigo(){
 				if(op==PALTEARSE)
 				{
 					exit(1);
-				}
-				if(op==SALTAFINCRIT)
-				{
-					if(tablaDeSimbolos[a1].valor==0)
-						i=a2-1;
 				}
 				if(op==SALTAINICRIT)
 				{
