@@ -12,6 +12,8 @@ c = u =) b \pe
 
 x = x*8 \pe
 
+x = x:)5 \pe
+
 imprime("Hola Mundo") \pe
 imprime("Teoría de Compiladores") \pe
 
