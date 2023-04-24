@@ -433,6 +433,16 @@ void interpretaCodigo(){
                 if(op==DIVIDIR){
 					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor/tablaDeSimbolos[a3].valor;
                 }
+		if(op==MULTIPLICAR){
+			tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor*tablaDeSimbolos[a3].valor;
+                }
+		
+		if(op==OPMAYORQUE){
+                   			if(tablaDeSimbolos[a2].valor>tablaDeSimbolos[a3].valor)
+							tablaDeSimbolos[a1].valor=1;
+					else
+							tablaDeSimbolos[a1].valor=0;
+                }
 
                 if(op==OPMAYORIGUALQUE){
 					if(tablaDeSimbolos[a2].valor>=tablaDeSimbolos[a3].valor)
@@ -509,6 +519,9 @@ void interpretaCodigo(){
 					if(tablaDeSimbolos[a1].valor!=tablaDeSimbolos[a2].valor)
 						i=a3;
 				}
+				if(op==IMPRIMIRCAD){
+                    			printf("%s",tablaDeSimbolos[a1].nombre );
+                		}
         }
 
 }
