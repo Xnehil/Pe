@@ -10,6 +10,11 @@ u = tinka \pe
 b = 500000000 \pe
 c = u =) b \pe
 
+x = x*8 \pe
+
+imprime("Hola Mundo") \pe
+imprime("Teoría de Compiladores") \pe
+
 
 
 owo= N \pe
