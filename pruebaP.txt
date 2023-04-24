@@ -17,6 +17,9 @@ x = x:)5 \pe
 imprime("Hola Mundo") \pe
 imprime("Teoría de Compiladores") \pe
 
+Si( x=)0 ): imprime("Numero positivo") \pe 
+fuepe 
+Sino: imprime("Es negativo") \pe fuepe
 
 
 owo= N \pe
