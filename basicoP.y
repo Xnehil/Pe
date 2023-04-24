@@ -73,7 +73,7 @@ expr: TINKA {int i = genTemp() ; generaCodigo(EXEC_TINKA,i,'-','-');$$=i;} ;
 
 compara: compara MENORQUE expr {int i=genTemp(); generaCodigo(OPMENORQUE, i, $1, $3); $$=i;};
 
-compara: compara MAYORQUE expr;
+compara: compara MAYORQUE expr {int i=genTemp(); generaCodigo(OPMAYORQUE, i, $1, $3); $$=i;};
 
 compara: compara IGUALQUE expr {int i=genTemp();generaCodigo(OPIGUALQUE,i,$1,$3);$$=i;};
 
@@ -96,7 +96,7 @@ compara: EXCLAMACION compara {int i=genTemp(); generaCodigo(NEGACION,i,$2,'-');$
 
 expr: term;
 
-term: term MUL factor;
+term: term MUL factor {int i= genTemp() ;generaCodigo(MULTIPLICAR,i,$1,$3);$$=i;};
 
 term: term DIV factor {int i= genTemp() ;generaCodigo(DIVIDIR,i,$1,$3);$$=i;};
 
@@ -139,7 +139,7 @@ listaSwitch: ;
 
 casoSwitch: {int i=$0; $$=i;} HACIA NUMENT {int i=localizaSimbolo(lexema,NUMENT); $$=i;} {generaCodigo(SALTASWITCH, $1, $4, '?'); $$=cx;} DOSPUNT listInst {tablaCod[$5].a3=cx+1;};
 
-instr: IMPRIME PARIZQ CADENA PARDER ENDL; 
+instr: IMPRIME PARIZQ CADENA {localizaSimbolo(lexema,CADENA);} {generaCodigo(IMPRIMIRCAD,$3,'-','-');} PARDER ENDL; 
 
 instr: IMPRIME PARIZQ ID {localizaSimbolo(lexema,ID);}  PARDER ENDL;
 
