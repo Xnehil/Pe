@@ -1,15 +1,5 @@
 manya N 8
 
-x= 7=(20 \pe
-x = 10/2 \pe
-
-y = 5==x \pe
-y = !x \pe
-
-u = tinka \pe
-b = 500000000 \pe
-c = u =) b \pe
-
 x = x*8 \pe
 
 x = x:)5 \pe
@@ -21,8 +11,33 @@ Si( x=)0 ): imprime("Numero positivo") \pe
 fuepe 
 Sino: imprime("Es negativo") \pe fuepe
 
+para (i=0, i=(5, i=i+1) hazte:
+    Si(i==3):
+        saltate \pe
+    fuepe
+    x=x-3 \pe
+fuepe
+
+
+x= 7=(20 \pe
+x = 10/2 \pe
+
+u = tinka \pe
+b = 500000000 \pe
+c = u =) b \pe
+
 
 owo= N \pe
+
+y = 5==x \pe
+y = !x \pe
+
+mientras(i=(3) hazte:
+	x = 4 \pe
+	i = i+1 \pe
+fuepe
+
+
 
 x=15 \pe
 z=0 \pe
@@ -44,4 +59,5 @@ micriterio:
 	y=y-1 \pe
 fuepe
 
-owo=4 \pe
+owo=4-x \pe
+
