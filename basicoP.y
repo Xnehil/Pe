@@ -122,7 +122,6 @@ auxPara: ID {localizaSimbolo(lexema,ID);} IGUAL compara; /*Para la inicializacio
 
 bloqinst : DOSPUNT listInst FUEPE;
 
-/*Nota: cambien el bloqueSino y ahora si funciona. El Si tmb termina en fuepe, para poder aprovechar bloqinst*/
 instr: CONDSI PARIZQ compara {generaCodigo(SALTARF,$3,'?','-'); $$=cx;} PARDER bloqinst
 {generaCodigo(SALTAR,'?','-','-'); $$=cx;}  {tablaCod[$4].a2=cx+1;} bloqueSino
 {tablaCod[$7].a1=cx+1;};
@@ -130,17 +129,6 @@ instr: CONDSI PARIZQ compara {generaCodigo(SALTARF,$3,'?','-'); $$=cx;} PARDER b
 bloqueSino: SINO bloqinst ;
 bloqueSino:;
 
-/*
-Este era el original
-instr: CONDSI PARIZQ compara {generaCodigo(SALTARF,$3,'?','-'); $$=cx;} PARDER bloqinst
-{generaCodigo(SALTAR,'?','-','-'); $$=cx;}  {tablaCod[$4].a2=cx+1;}; 
-
-instr: CONDSI PARIZQ compara {generaCodigo(SALTARF,$3,'?','-'); $$=cx;} PARDER listInst
-{generaCodigo(SALTAR,'?','-','-'); $$=cx;}  {tablaCod[$4].a2=cx+1;} bloqSino
-{tablaCod[$7].a1=cx+1;};
-
-bloqSino: SINO bloqinst;
-*/
 
 incluir: TRAETE LIBRERIA;
 
