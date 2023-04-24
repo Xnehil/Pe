@@ -424,21 +424,21 @@ void imprimeTablaSimbolo(){
 void interpretaCodigo(){
         int i,op,a1,a2,a3;
         for (i=0;i<=cx;i=i+1) {
-                op=tablaCod[i].op;
-                a1=tablaCod[i].a1 ;
-                a2=tablaCod[i].a2 ;
-                a3=tablaCod[i].a3 ;
-              
-                
-                if(op==ASIGNAR){
-					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor;
-                }  
-                if(op==DIVIDIR){
-					tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor/tablaDeSimbolos[a3].valor;
-                }
-		if(op==MULTIPLICAR){
-			tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor*tablaDeSimbolos[a3].valor;
-                }
+			op=tablaCod[i].op;
+			a1=tablaCod[i].a1 ;
+			a2=tablaCod[i].a2 ;
+			a3=tablaCod[i].a3 ;
+			
+			
+			if(op==ASIGNAR){
+				tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor;
+			}  
+			if(op==DIVIDIR){
+				tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor/tablaDeSimbolos[a3].valor;
+			}
+			if(op==MULTIPLICAR){
+				tablaDeSimbolos[a1].valor=tablaDeSimbolos[a2].valor*tablaDeSimbolos[a3].valor;
+					}
 		
 		if(op==OPMAYORQUE){
                    			if(tablaDeSimbolos[a2].valor>tablaDeSimbolos[a3].valor)
@@ -500,7 +500,7 @@ void interpretaCodigo(){
                 }
                 if(op == EXEC_TINKA){
                     srand(time(NULL));
-                    tablaDeSimbolos[a1].valor = rand()%50;
+                    tablaDeSimbolos[a1].valor = rand()%1234;
                 }
 				if(op==MANYAR)
 				{
