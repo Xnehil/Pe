@@ -29,4 +29,9 @@ meVoy(x):
 		y=x+z \pe 
 fuepe
 
+micriterio: 
+	x++ \pe
+	y=y-1 \pe
+fuepe
+
 owo=4 \pe
